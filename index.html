@@ -7,6 +7,40 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+  <!-- 기분 선택 모달 -->
+  <div class="mood-overlay" id="mood-overlay">
+    <div class="mood-modal">
+      <p class="mood-question">오늘의 기분은 어때요? 🌸</p>
+      <div class="mood-grid">
+        <button class="mood-btn" data-mood="기쁨" data-emoji="😊">
+          <span class="mood-emoji">😊</span>
+          <span class="mood-label">기쁨</span>
+        </button>
+        <button class="mood-btn" data-mood="슬픔" data-emoji="😢">
+          <span class="mood-emoji">😢</span>
+          <span class="mood-label">슬픔</span>
+        </button>
+        <button class="mood-btn" data-mood="피곤함" data-emoji="😴">
+          <span class="mood-emoji">😴</span>
+          <span class="mood-label">피곤함</span>
+        </button>
+        <button class="mood-btn" data-mood="화남" data-emoji="😠">
+          <span class="mood-emoji">😠</span>
+          <span class="mood-label">화남</span>
+        </button>
+        <button class="mood-btn" data-mood="배고픔" data-emoji="🤤">
+          <span class="mood-emoji">🤤</span>
+          <span class="mood-label">배고픔</span>
+        </button>
+        <button class="mood-btn" data-mood="쏘쏘" data-emoji="😐">
+          <span class="mood-emoji">😐</span>
+          <span class="mood-label">쏘쏘</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <header>
     <div class="header-content">
       <svg class="title-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,32 +52,50 @@
   </header>
 
   <main>
-    <section class="input-area">
-      <form id="todo-form">
-        <input
-          type="text"
-          id="todo-input"
-          placeholder="새 할 일을 입력하세요"
-          autocomplete="off"
-        />
-        <button type="submit">추가</button>
-      </form>
-    </section>
-
-    <section class="filter-bar">
-      <button class="filter-btn active" data-filter="all">전체</button>
-      <button class="filter-btn" data-filter="active">진행중</button>
-      <button class="filter-btn" data-filter="completed">완료</button>
-    </section>
-
-    <div class="toolbar">
-      <span class="stats" id="stats"></span>
-      <button class="clear-completed-btn" id="clear-completed-btn">완료 삭제</button>
+    <!-- 탭 네비게이션 -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="todo">📝 할 일</button>
+      <button class="tab-btn" data-tab="calendar">📅 달력</button>
     </div>
 
-    <ul class="todo-list" id="todo-list"></ul>
+    <!-- 할 일 뷰 -->
+    <div class="view" id="view-todo">
+      <section class="input-area">
+        <form id="todo-form">
+          <input
+            type="text"
+            id="todo-input"
+            placeholder="새 할 일을 입력하세요"
+            autocomplete="off"
+          />
+          <button type="submit">추가</button>
+        </form>
+      </section>
 
-    <p class="empty-msg" id="empty-msg">할 일이 없습니다.</p>
+      <section class="filter-bar">
+        <button class="filter-btn active" data-filter="all">전체</button>
+        <button class="filter-btn" data-filter="active">진행중</button>
+        <button class="filter-btn" data-filter="completed">완료</button>
+      </section>
+
+      <div class="toolbar">
+        <span class="stats" id="stats"></span>
+        <button class="clear-completed-btn" id="clear-completed-btn">완료 삭제</button>
+      </div>
+
+      <ul class="todo-list" id="todo-list"></ul>
+      <p class="empty-msg" id="empty-msg">할 일이 없습니다.</p>
+    </div>
+
+    <!-- 달력 뷰 -->
+    <div class="view hidden" id="view-calendar">
+      <div class="calendar-nav">
+        <button class="cal-nav-btn" id="cal-prev">‹</button>
+        <span class="cal-title" id="cal-title"></span>
+        <button class="cal-nav-btn" id="cal-next">›</button>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
   </main>
 
   <script src="app.js"></script>

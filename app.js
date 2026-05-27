@@ -1,14 +1,43 @@
 const STORAGE_KEY = 'todos';
+const MOOD_KEY = 'moods';
 
 let todos = [];
 let filter = 'all';
+let moods = {};
+let calYear, calMonth;
 
-function load() {
-  try {
-    todos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  } catch {
-    todos = [];
+// --- 날짜 키 ---
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+// --- 기분 ---
+function loadMoods() {
+  try { moods = JSON.parse(localStorage.getItem(MOOD_KEY)) || {}; }
+  catch { moods = {}; }
+}
+
+function saveMoods() {
+  localStorage.setItem(MOOD_KEY, JSON.stringify(moods));
+}
+
+function setMood(mood, emoji) {
+  moods[todayKey()] = { mood, emoji };
+  saveMoods();
+  document.getElementById('mood-overlay').classList.remove('visible');
+}
+
+function checkMoodOverlay() {
+  if (!moods[todayKey()]) {
+    document.getElementById('mood-overlay').classList.add('visible');
   }
+}
+
+// --- 할 일 ---
+function load() {
+  try { todos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { todos = []; }
 }
 
 function save() {
@@ -25,11 +54,7 @@ function addTodo(text) {
 
 function toggleTodo(id) {
   const todo = todos.find(t => t.id === id);
-  if (todo) {
-    todo.completed = !todo.completed;
-    save();
-    render();
-  }
+  if (todo) { todo.completed = !todo.completed; save(); render(); }
 }
 
 function deleteTodo(id) {
@@ -77,12 +102,8 @@ function render() {
   const completedCount = todos.filter(t => t.completed).length;
   const totalCount = todos.length;
 
-  stats.textContent = totalCount > 0
-    ? `완료 ${completedCount}개 / 전체 ${totalCount}개`
-    : '';
-
+  stats.textContent = totalCount > 0 ? `완료 ${completedCount}개 / 전체 ${totalCount}개` : '';
   clearBtn.style.display = completedCount > 0 ? 'block' : 'none';
-
   list.innerHTML = '';
 
   if (filtered.length === 0) {
@@ -92,7 +113,6 @@ function render() {
     filtered.forEach(todo => {
       const li = document.createElement('li');
       li.className = `todo-item${todo.completed ? ' completed' : ''}`;
-      li.dataset.id = todo.id;
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
@@ -130,9 +150,81 @@ function render() {
   }
 }
 
+// --- 달력 ---
+function renderCalendar() {
+  const title = document.getElementById('cal-title');
+  const grid = document.getElementById('calendar-grid');
+
+  const firstDay = new Date(calYear, calMonth, 1);
+  const lastDay = new Date(calYear, calMonth + 1, 0);
+  const startDow = firstDay.getDay();
+  const totalDays = lastDay.getDate();
+
+  title.textContent = `${calYear}년 ${calMonth + 1}월`;
+  grid.innerHTML = '';
+
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  dayNames.forEach((d, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'cal-header-cell' + (i === 0 ? ' sun' : i === 6 ? ' sat' : '');
+    cell.textContent = d;
+    grid.appendChild(cell);
+  });
+
+  for (let i = 0; i < startDow; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell empty';
+    grid.appendChild(cell);
+  }
+
+  const today = todayKey();
+  for (let d = 1; d <= totalDays; d++) {
+    const dow = (startDow + d - 1) % 7;
+    const dateKey = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const moodData = moods[dateKey];
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell'
+      + (dateKey === today ? ' today' : '')
+      + (dow === 0 ? ' sun' : dow === 6 ? ' sat' : '');
+
+    const num = document.createElement('span');
+    num.className = 'cal-date';
+    num.textContent = d;
+    cell.appendChild(num);
+
+    if (moodData) {
+      const emojiEl = document.createElement('span');
+      emojiEl.className = 'cal-mood';
+      emojiEl.textContent = moodData.emoji;
+      cell.appendChild(emojiEl);
+    }
+
+    grid.appendChild(cell);
+  }
+}
+
+// --- 탭 ---
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+  document.getElementById(`view-${tab}`).classList.remove('hidden');
+  if (tab === 'calendar') renderCalendar();
+}
+
+// --- 초기화 ---
 document.addEventListener('DOMContentLoaded', () => {
   load();
+  loadMoods();
+
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+
   render();
+  checkMoodOverlay();
 
   document.getElementById('todo-form').addEventListener('submit', e => {
     e.preventDefault();
@@ -147,4 +239,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('clear-completed-btn').addEventListener('click', deleteCompleted);
+
+  document.querySelectorAll('.mood-btn').forEach(btn => {
+    btn.addEventListener('click', () => setMood(btn.dataset.mood, btn.dataset.emoji));
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  document.getElementById('cal-prev').addEventListener('click', () => {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  });
+
+  document.getElementById('cal-next').addEventListener('click', () => {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  });
 });

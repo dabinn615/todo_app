@@ -6,15 +6,16 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #fdf2f8;
+  background: #ffffff;
   color: #3b1a2e;
   min-height: 100vh;
   padding: 24px 16px;
 }
 
+/* ── 헤더 ── */
 header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .header-content {
@@ -24,9 +25,7 @@ header {
   color: #e879a0;
 }
 
-.title-icon {
-  flex-shrink: 0;
-}
+.title-icon { flex-shrink: 0; }
 
 header h1 {
   font-size: 1.9rem;
@@ -35,24 +34,53 @@ header h1 {
   letter-spacing: -0.5px;
 }
 
+/* ── 메인 카드 ── */
 main {
   max-width: 480px;
   margin: 0 auto;
   background: #ffffff;
   border-radius: 16px;
-  padding: 24px 20px;
-  box-shadow: 0 4px 24px rgba(232, 121, 160, 0.12);
+  padding: 0 0 20px;
+  box-shadow: 0 4px 24px rgba(232, 121, 160, 0.14);
+  overflow: hidden;
 }
 
-/* 입력 영역 */
-.input-area {
+/* ── 탭 ── */
+.tab-nav {
+  display: flex;
+  border-bottom: 2px solid #fce7f3;
   margin-bottom: 20px;
 }
 
-#todo-form {
-  display: flex;
-  gap: 8px;
+.tab-btn {
+  flex: 1;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c084a0;
+  cursor: pointer;
+  transition: color 0.2s, border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
 }
+
+.tab-btn:hover { color: #f472b6; }
+
+.tab-btn.active {
+  color: #e879a0;
+  border-bottom: 2px solid #f472b6;
+}
+
+/* ── 뷰 ── */
+.view { padding: 0 20px; }
+.view.hidden { display: none; }
+
+/* ── 입력 영역 ── */
+.input-area { margin-bottom: 20px; }
+
+#todo-form { display: flex; gap: 8px; }
 
 #todo-input {
   flex: 1;
@@ -64,9 +92,7 @@ main {
   transition: border-color 0.2s;
 }
 
-#todo-input:focus {
-  border-color: #f472b6;
-}
+#todo-input:focus { border-color: #f472b6; }
 
 #todo-form button {
   padding: 10px 18px;
@@ -81,11 +107,9 @@ main {
   white-space: nowrap;
 }
 
-#todo-form button:hover {
-  background: #ec4899;
-}
+#todo-form button:hover { background: #ec4899; }
 
-/* 필터 바 */
+/* ── 필터 바 ── */
 .filter-bar {
   display: flex;
   gap: 6px;
@@ -105,10 +129,7 @@ main {
   transition: all 0.2s;
 }
 
-.filter-btn:hover {
-  border-color: #f472b6;
-  color: #f472b6;
-}
+.filter-btn:hover { border-color: #f472b6; color: #f472b6; }
 
 .filter-btn.active {
   background: #f472b6;
@@ -117,7 +138,7 @@ main {
   font-weight: 700;
 }
 
-/* 툴바 (통계 + 완료 삭제 버튼) */
+/* ── 툴바 ── */
 .toolbar {
   display: flex;
   align-items: center;
@@ -126,10 +147,7 @@ main {
   min-height: 24px;
 }
 
-.stats {
-  font-size: 0.85rem;
-  color: #c084a0;
-}
+.stats { font-size: 0.85rem; color: #c084a0; }
 
 .clear-completed-btn {
   display: none;
@@ -149,7 +167,7 @@ main {
   background: #fdf2f8;
 }
 
-/* 할 일 목록 */
+/* ── 할 일 목록 ── */
 .todo-list {
   list-style: none;
   display: flex;
@@ -167,15 +185,9 @@ main {
   transition: background 0.15s;
 }
 
-.todo-item:hover {
-  background: #fce7f3;
-}
+.todo-item:hover { background: #fce7f3; }
+.todo-item.completed { opacity: 0.5; }
 
-.todo-item.completed {
-  opacity: 0.5;
-}
-
-/* 커스텀 체크박스 */
 .todo-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -207,7 +219,6 @@ main {
   transform: rotate(45deg);
 }
 
-/* 할 일 텍스트 */
 .todo-text {
   flex: 1;
   font-size: 1rem;
@@ -220,12 +231,8 @@ main {
   color: #d8a0b8;
 }
 
-/* 우선순위 별 */
-.priority-stars {
-  display: flex;
-  gap: 2px;
-  flex-shrink: 0;
-}
+/* ── 우선순위 별 ── */
+.priority-stars { display: flex; gap: 2px; flex-shrink: 0; }
 
 .star-btn {
   background: none;
@@ -238,16 +245,10 @@ main {
   transition: color 0.15s, transform 0.1s;
 }
 
-.star-btn:hover {
-  color: #fbbf24;
-  transform: scale(1.2);
-}
+.star-btn:hover { color: #fbbf24; transform: scale(1.2); }
+.star-btn.active { color: #fbbf24; }
 
-.star-btn.active {
-  color: #fbbf24;
-}
-
-/* 삭제 버튼 */
+/* ── 삭제 버튼 ── */
 .delete-btn {
   background: none;
   border: none;
@@ -261,21 +262,14 @@ main {
   transition: color 0.2s;
 }
 
-.delete-btn:hover {
-  color: #ec4899;
-}
+.delete-btn:hover { color: #ec4899; }
 
-/* 데스크톱: hover 시만 삭제 버튼 표시 */
 @media (hover: hover) {
-  .delete-btn {
-    opacity: 0;
-  }
-  .todo-item:hover .delete-btn {
-    opacity: 1;
-  }
+  .delete-btn { opacity: 0; }
+  .todo-item:hover .delete-btn { opacity: 1; }
 }
 
-/* 빈 목록 메시지 */
+/* ── 빈 목록 메시지 ── */
 .empty-msg {
   display: none;
   text-align: center;
@@ -283,18 +277,160 @@ main {
   font-size: 0.95rem;
   padding: 28px 0 8px;
 }
+.empty-msg.visible { display: block; }
 
-.empty-msg.visible {
-  display: block;
+/* ── 달력 ── */
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-/* 모바일 조정 */
-@media (max-width: 360px) {
-  main {
-    padding: 18px 14px;
-  }
+.cal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #e879a0;
+}
 
-  header h1 {
-    font-size: 1.6rem;
-  }
+.cal-nav-btn {
+  background: none;
+  border: 1.5px solid #fce7f3;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  font-size: 1.2rem;
+  color: #c084a0;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-nav-btn:hover { border-color: #f472b6; color: #f472b6; }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-header-cell {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #c084a0;
+  padding: 6px 0;
+}
+
+.cal-header-cell.sun { color: #f87171; }
+.cal-header-cell.sat { color: #60a5fa; }
+
+.cal-cell {
+  min-height: 52px;
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: #fdf2f8;
+  transition: background 0.15s;
+}
+
+.cal-cell.empty { background: none; }
+
+.cal-cell:not(.empty):hover { background: #fce7f3; }
+
+.cal-cell.today {
+  background: #f472b6;
+  box-shadow: 0 2px 8px rgba(244, 114, 182, 0.35);
+}
+
+.cal-cell.today .cal-date { color: #ffffff; font-weight: 700; }
+
+.cal-cell.sun .cal-date { color: #f87171; }
+.cal-cell.sat .cal-date { color: #60a5fa; }
+.cal-cell.today .cal-date { color: #ffffff; }
+
+.cal-date {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #7b4f65;
+  line-height: 1.4;
+}
+
+.cal-mood { font-size: 1.15rem; line-height: 1; }
+
+/* ── 기분 모달 ── */
+.mood-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(253, 242, 248, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.mood-overlay.visible { display: flex; }
+
+.mood-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(232, 121, 160, 0.2);
+  text-align: center;
+}
+
+.mood-question {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e879a0;
+  margin-bottom: 24px;
+}
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mood-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: #fdf2f8;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mood-btn:hover {
+  border-color: #f472b6;
+  background: #fce7f3;
+  transform: translateY(-2px);
+}
+
+.mood-emoji { font-size: 2rem; line-height: 1; }
+
+.mood-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #c084a0;
+}
+
+/* ── 모바일 ── */
+@media (max-width: 360px) {
+  main { padding-bottom: 16px; }
+  header h1 { font-size: 1.6rem; }
+  .mood-grid { grid-template-columns: repeat(2, 1fr); }
 }
