@@ -1,0 +1,238 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3b5bdb;
+  letter-spacing: -0.5px;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 입력 영역 */
+.input-area {
+  margin-bottom: 20px;
+}
+
+#todo-form {
+  display: flex;
+  gap: 8px;
+}
+
+#todo-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #dee2e6;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#todo-input:focus {
+  border-color: #3b5bdb;
+}
+
+#todo-form button {
+  padding: 10px 18px;
+  background: #3b5bdb;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+#todo-form button:hover {
+  background: #2f4ac7;
+}
+
+/* 필터 바 */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 8px 0;
+  background: none;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #868e96;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: #3b5bdb;
+  color: #3b5bdb;
+}
+
+.filter-btn.active {
+  background: #3b5bdb;
+  border-color: #3b5bdb;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* 통계 */
+.stats {
+  font-size: 0.82rem;
+  color: #868e96;
+  margin-bottom: 14px;
+  min-height: 18px;
+}
+
+/* 할 일 목록 */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+
+.todo-item:hover {
+  background: #f1f3f5;
+}
+
+.todo-item.completed {
+  opacity: 0.55;
+}
+
+/* 커스텀 체크박스 */
+.todo-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.todo-checkbox:checked {
+  background: #3b5bdb;
+  border-color: #3b5bdb;
+}
+
+.todo-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* 할 일 텍스트 */
+.todo-text {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #adb5bd;
+}
+
+/* 삭제 버튼 */
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ced4da;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: #fa5252;
+}
+
+/* 데스크톱: hover 시만 삭제 버튼 표시 */
+@media (hover: hover) {
+  .delete-btn {
+    opacity: 0;
+  }
+  .todo-item:hover .delete-btn {
+    opacity: 1;
+  }
+}
+
+/* 빈 목록 메시지 */
+.empty-msg {
+  display: none;
+  text-align: center;
+  color: #adb5bd;
+  font-size: 0.9rem;
+  padding: 28px 0 8px;
+}
+
+.empty-msg.visible {
+  display: block;
+}
+
+/* 모바일 조정 */
+@media (max-width: 360px) {
+  main {
+    padding: 18px 14px;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+}

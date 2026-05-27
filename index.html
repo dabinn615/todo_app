@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>할 일 목록</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>할 일 목록</h1>
+  </header>
+
+  <main>
+    <section class="input-area">
+      <form id="todo-form">
+        <input
+          type="text"
+          id="todo-input"
+          placeholder="새 할 일을 입력하세요"
+          autocomplete="off"
+        />
+        <button type="submit">추가</button>
+      </form>
+    </section>
+
+    <section class="filter-bar">
+      <button class="filter-btn active" data-filter="all">전체</button>
+      <button class="filter-btn" data-filter="active">진행중</button>
+      <button class="filter-btn" data-filter="completed">완료</button>
+    </section>
+
+    <section class="stats" id="stats"></section>
+
+    <ul class="todo-list" id="todo-list"></ul>
+
+    <p class="empty-msg" id="empty-msg">할 일이 없습니다.</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
