@@ -29,9 +29,7 @@ function setMood(mood, emoji) {
 }
 
 function checkMoodOverlay() {
-  if (!moods[todayKey()]) {
-    document.getElementById('mood-overlay').classList.add('visible');
-  }
+  document.getElementById('mood-overlay').classList.add('visible');
 }
 
 // --- 할 일 ---
@@ -87,9 +85,11 @@ function setFilter(f) {
 }
 
 function getFiltered() {
-  if (filter === 'active') return todos.filter(t => !t.completed);
-  if (filter === 'completed') return todos.filter(t => t.completed);
-  return todos;
+  let result;
+  if (filter === 'active') result = todos.filter(t => !t.completed);
+  else if (filter === 'completed') result = todos.filter(t => t.completed);
+  else result = [...todos];
+  return result.sort((a, b) => (b.priority || 0) - (a.priority || 0));
 }
 
 function render() {
