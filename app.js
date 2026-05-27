@@ -18,7 +18,7 @@ function save() {
 function addTodo(text) {
   const trimmed = text.trim();
   if (!trimmed) return;
-  todos.push({ id: Date.now(), text: trimmed, completed: false });
+  todos.push({ id: Date.now(), text: trimmed, completed: false, priority: 0 });
   save();
   render();
 }
@@ -34,6 +34,21 @@ function toggleTodo(id) {
 
 function deleteTodo(id) {
   todos = todos.filter(t => t.id !== id);
+  save();
+  render();
+}
+
+function setPriority(id, stars) {
+  const todo = todos.find(t => t.id === id);
+  if (todo) {
+    todo.priority = todo.priority === stars ? 0 : stars;
+    save();
+    render();
+  }
+}
+
+function deleteCompleted() {
+  todos = todos.filter(t => !t.completed);
   save();
   render();
 }
@@ -56,6 +71,7 @@ function render() {
   const list = document.getElementById('todo-list');
   const emptyMsg = document.getElementById('empty-msg');
   const stats = document.getElementById('stats');
+  const clearBtn = document.getElementById('clear-completed-btn');
 
   const filtered = getFiltered();
   const completedCount = todos.filter(t => t.completed).length;
@@ -64,6 +80,8 @@ function render() {
   stats.textContent = totalCount > 0
     ? `완료 ${completedCount}개 / 전체 ${totalCount}개`
     : '';
+
+  clearBtn.style.display = completedCount > 0 ? 'block' : 'none';
 
   list.innerHTML = '';
 
@@ -86,6 +104,17 @@ function render() {
       span.className = 'todo-text';
       span.textContent = todo.text;
 
+      const stars = document.createElement('div');
+      stars.className = 'priority-stars';
+      for (let i = 1; i <= 3; i++) {
+        const star = document.createElement('button');
+        star.className = 'star-btn' + (i <= (todo.priority || 0) ? ' active' : '');
+        star.textContent = '★';
+        star.setAttribute('aria-label', `우선순위 ${i}`);
+        star.addEventListener('click', () => setPriority(todo.id, i));
+        stars.appendChild(star);
+      }
+
       const delBtn = document.createElement('button');
       delBtn.className = 'delete-btn';
       delBtn.textContent = '✕';
@@ -94,6 +123,7 @@ function render() {
 
       li.appendChild(checkbox);
       li.appendChild(span);
+      li.appendChild(stars);
       li.appendChild(delBtn);
       list.appendChild(li);
     });
@@ -115,4 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => setFilter(btn.dataset.filter));
   });
+
+  document.getElementById('clear-completed-btn').addEventListener('click', deleteCompleted);
 });
